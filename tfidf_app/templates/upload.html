@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TF-IDF Analyzer</title>
+    <style>
+        table { border-collapse: collapse; margin: 20px 0; }
+        th, td { padding: 8px; border: 1px solid #ddd; }
+        th { background-color: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <h1>Анализ TF-IDF</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="file" required>
+        <button type="submit">Анализировать</button>
+    </form>
+
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    {% if data %}
+    <h2>Топ 50 слов по IDF:</h2>
+    <table>
+        <tr>
+            <th>Слово</th>
+            <th>TF (Document count)</th>
+            {% for doc in data.items %}
+                <th> {{ doc }}</th>
+            {% endfor %}
+            <th>TF (Term count)</th>
+            <th>IDF</th>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <td> <b>{{ item.word }}</b> </td>
+            <td>{{ item.tf }}</td>
+            <td>{% for doc, value in item.docs.items %}
+                    {% if value %}
+                    <b>{{ doc }} - {{ value }} </b>
+                    {% else %}
+                        {{ doc }} - {{ value }}
+                    {% endif %}
+                {% endfor %}</td>
+            <td> <b>{{ item.idf }} </b> </td>
+        </tr>
+        {% endfor %}
+    </table>
+    <div class="pagination">
+    <span class="step-links">
+        {% if data.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ data.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ data.number }} of {{ data.paginator.num_pages }}.
+        </span>
+
+        {% if data.has_next %}
+            <a href="?page={{ data.next_page_number }}">next</a>
+            <a href="?page={{ data.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+    {% endif %}
+
+</body>
+</html>
