@@ -2,6 +2,9 @@ import math
 import string
 
 from collections import defaultdict
+from django.db.models import Min, Max, Avg, Count, Q
+
+from tfidf_app.models import Metrics
 
 
 def preprocess_text(file) -> list[str]:
@@ -83,3 +86,22 @@ def data_format(file):
 
     # Сортировка и выбор топ-50
     return sorted(data, key=lambda x: -x['idf'])[:50]
+
+
+def calculate_metrics():
+
+    metrics = Metrics.objects.aggregate(
+        total_files=Count('id'),
+        min_time=Min('processing_time'),
+        avg_time=Avg('processing_time'),
+        max_time=Max('processing_time'),
+        latest_file_processed=Max('processed_timestamp'),
+        success_files=Count('id', filter=Q(status='success')),
+        peak_memory_usage=Max('memory_usage'),
+    )
+
+    latest_file_processed = metrics.get('latest_file_processed')
+    metrics['latest_file_processed'] = latest_file_processed.strftime('%Y-%m-%d %H:%M:%S') if \
+        latest_file_processed else 'N/A'
+
+    return metrics
