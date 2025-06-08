@@ -24,15 +24,19 @@ RUN useradd -m -r appuser && \
 COPY --from=builder /usr/local/lib/python3.11/site-packages/ /usr/local/lib/python3.11/site-packages/
 COPY --from=builder /usr/local/bin/ /usr/local/bin/
 
+RUN mkdir -p /app/staticfiles && chown -R appuser:appuser /app/staticfiles
+
 WORKDIR /app
 
 # Copy application code
-COPY --chown=appuser:appuser . .
+COPY --chown=root:root . .
 
 RUN python manage.py collectstatic --no-input --clear
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+
+RUN chown -R appuser:appuser /app
 
 USER appuser
 
