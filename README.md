@@ -1,13 +1,29 @@
 ## Структура проекта
-### /tf-idf
-    - tfidf_app # Основное приложение
-    - Dockerfile # Конфигурация Docker
-    - .example.env # Шаблон переменных окружения
-    - README.md # Описание проекта
-    - docker-compose.yml # Оркестрация контейнеров
-    - entrypoint.prod.sh Конфигурации точки входа при сборке приложения
-    - nginx.conf # Конфигурация nginx
-    - requirements.txt # Зависимости Python
+```
+tf-idf/
+├─ docs/                    # Фабрика схем и схемы для документации api (OpenAPI 3)
+│  ├─ schema_factory.py     # Фабрика схем
+│  ├─ schemas.py            # Схемы
+├─ main/
+│  ├─ settings.py           # Основыне настройки api
+│  ├─ urls.py               # url api
+├─ tfidf_app/               # Основное приложение
+│  ├─ admin.py              # настройки админ панели
+│  ├─ models.py             # Описание моделей базы данных
+│  ├─ serializers.py        # Сериализаторы
+│  ├─ urls.py               # url приложения
+│  ├─ utils.py              # Утилиты, расчеты
+│  ├─ version.py            # Версия api в формате SemVer
+│  ├─ views.py              # Описание вью
+├─ .example.env             # Шаблон переменных окружения
+├─ CHANGELOG.md             # Описание обновлений, изменений и исправлений проекта
+├─ docker-compose.yml       # Оркестрация контейнеров
+├─ Dockerfile               # Конфигурация Docker
+├─ entrypoint.prod.sh       # Конфигурации точки входа при сборке приложения
+├─ nginx.conf               # Конфигурация nginx
+├─ README.md                # Описание проекта
+├─ requirements.txt         # Зависимости Python
+```
 
 ## Запуск приложения
 ### Зависимости
@@ -23,6 +39,7 @@
 
 ### Конфигурируемые параметры 
     - Параметры настраиваются в '.env.prod':
+
     # Django Settings
     - DEBUG: режим отладки  - по умолчанию False
     - SECRET_KEY: секретный ключ для api

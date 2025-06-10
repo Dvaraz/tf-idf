@@ -9,6 +9,8 @@ from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
 from rest_framework import status
 
+from docs.schemas import upload_response_schema, status_response_schema, api_info_response_schema, \
+    metrics_response_schema
 from .utils import data_format, calculate_metrics
 from tfidf_app.serializers import FileUploadSerializer, MetricsInSerializer
 from tfidf_app.models import Metrics
@@ -18,6 +20,7 @@ from tfidf_app.version import __version__
 class FileUploadView(APIView):
     parser_classes = (MultiPartParser, )
 
+    @upload_response_schema(request=FileUploadSerializer())
     def post(self, request):
         serializer = FileUploadSerializer(data=request.data)
         if not serializer.is_valid():
@@ -75,6 +78,7 @@ class FileUploadView(APIView):
 
 class MetricsView(APIView):
 
+    @metrics_response_schema
     def get(self, request):
         metrics = calculate_metrics()
 
@@ -93,12 +97,14 @@ class MetricsView(APIView):
 
 class StatusGetView(APIView):
 
+    @status_response_schema
     def get(self, request):
         return Response({"status": "Ok"}, status=status.HTTP_200_OK)
 
 
 class ApiInfo(APIView):
 
+    @api_info_response_schema
     def get(self, request):
         data = {
             "name": "TF-IDF API",

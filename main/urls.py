@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from tfidf_app import views
+
+from drf_spectacular.views import SpectacularSwaggerView, SpectacularAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', views.upload_file, name='upload')
-    path("api/", include("tfidf_app.urls"))
+    path("api/v1/", include("tfidf_app.urls")),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui')
 ]
