@@ -10,3 +10,12 @@ def create_dict_schema(status: int, name: str, fields: dict, request: Optional =
                              fields=fields
                          )}
                          )
+
+
+def general_response_schema(summary: str, description: str, responses, methods: list[str]) -> extend_schema:
+    return extend_schema(
+        summary=summary,
+        description=description,
+        responses=responses,
+        methods=methods
+    )
