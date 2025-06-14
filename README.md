@@ -7,14 +7,21 @@ tf-idf/
 ├─ main/
 │  ├─ settings.py           # Основыне настройки api
 │  ├─ urls.py               # url api
-├─ tfidf_app/               # Основное приложение
-│  ├─ admin.py              # настройки админ панели
-│  ├─ models.py             # Описание моделей базы данных
-│  ├─ serializers.py        # Сериализаторы
-│  ├─ urls.py               # url приложения
-│  ├─ utils.py              # Утилиты, расчеты
-│  ├─ version.py            # Версия api в формате SemVer
-│  ├─ views.py              # Описание вью
+├─ core/
+    ├─ tfidf_app/               # Основное приложение
+    │  ├─ admin.py              # настройки админ панели
+    │  ├─ models.py             # Описание моделей базы данных
+    │  ├─ serializers.py        # Сериализаторы
+    │  ├─ urls.py               # url приложения
+    │  ├─ utils.py              # Утилиты, расчеты
+    │  ├─ version.py            # Версия api в формате SemVer
+    │  ├─ views.py              # Описание вью
+    ├─ user/                    # Приложение для юзера
+    │  ├─ admin.py              # настройки админ панели
+    │  ├─ models.py             # Описание моделей базы данных
+    │  ├─ serializers.py        # Сериализаторы
+    │  ├─ urls.py               # url приложения
+    │  ├─ views.py              # Описание вью
 ├─ .example.env             # Шаблон переменных окружения
 ├─ CHANGELOG.md             # Описание обновлений, изменений и исправлений проекта
 ├─ docker-compose.yml       # Оркестрация контейнеров
@@ -35,6 +42,7 @@ tf-idf/
     - Скопировать конфиг: 'cp .example.env .env.prod'
     - Заполнить параметры в '.env.prod'
     - Запустить: 'docker compose up --build'
+    - Запустить команду: sudo docker exec -it django-docker python manage.py createsuperuser - для создания суперпользователя
     - Приложение будет доступно на порту 8001
 
 ### Конфигурируемые параметры 
@@ -57,3 +65,7 @@ tf-idf/
     - POSTGRES_DB: название базы данных
     - POSTGRES_USER: имя пользователя для базы данных
     - POSTGRES_PASSWORD: пароль базы данных
+
+    # Smtp settings
+    - DEFAULT_FROM_EMAIL: адресс smtp сервиса
+    - EMAIL_HOST_PASSWORD: пароль smtp сервиса

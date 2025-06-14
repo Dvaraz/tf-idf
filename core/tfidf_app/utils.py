@@ -4,7 +4,7 @@ import string
 from collections import defaultdict
 from django.db.models import Min, Max, Avg, Count, Q
 
-from tfidf_app.models import Metrics
+from core.tfidf_app.models import Metrics
 
 
 def preprocess_text(file) -> list[str]:

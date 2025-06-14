@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from tfidf_app.models import Metrics
+from core.tfidf_app.models import Metrics
 
 
 class FileUploadSerializer(serializers.Serializer):

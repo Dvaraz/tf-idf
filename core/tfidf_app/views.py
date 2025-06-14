@@ -4,6 +4,7 @@ import gc
 
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.views import APIView
 from rest_framework.parsers import MultiPartParser
 from rest_framework.response import Response
@@ -12,9 +13,9 @@ from rest_framework import status
 from docs.schemas import upload_response_schema, status_response_schema, api_info_response_schema, \
     metrics_response_schema
 from .utils import data_format, calculate_metrics
-from tfidf_app.serializers import FileUploadSerializer, MetricsInSerializer
-from tfidf_app.models import Metrics
-from tfidf_app.version import __version__
+from core.tfidf_app.serializers import FileUploadSerializer, MetricsInSerializer
+from core.tfidf_app.models import Metrics
+from core.tfidf_app.version import __version__
 
 
 class FileUploadView(APIView):
@@ -96,13 +97,16 @@ class MetricsView(APIView):
 
 
 class StatusGetView(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @status_response_schema
     def get(self, request):
+        print(request.user)
         return Response({"status": "Ok"}, status=status.HTTP_200_OK)
 
 
 class ApiInfo(APIView):
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @api_info_response_schema
     def get(self, request):
