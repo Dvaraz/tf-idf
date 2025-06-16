@@ -8,6 +8,14 @@ tf-idf/
 │  ├─ settings.py           # Основыне настройки api
 │  ├─ urls.py               # url api
 ├─ core/
+    ├─ doc_collections/         # Приложение для работы с документами и колекциями.
+    │  ├─ models.py             # Описание моделей базы данных
+    │  ├─ serializers.py        # Сериализаторы
+    │  ├─ services.py           # Сервисы для инфроструктуры
+    │  ├─ signals.py            # настройки сигналов
+    │  ├─ urls.py               # url приложения
+    │  ├─ views.py              # Описание вью
+    │
     ├─ tfidf_app/               # Основное приложение
     │  ├─ admin.py              # настройки админ панели
     │  ├─ models.py             # Описание моделей базы данных
@@ -16,6 +24,7 @@ tf-idf/
     │  ├─ utils.py              # Утилиты, расчеты
     │  ├─ version.py            # Версия api в формате SemVer
     │  ├─ views.py              # Описание вью
+    │
     ├─ user/                    # Приложение для юзера
     │  ├─ admin.py              # настройки админ панели
     │  ├─ models.py             # Описание моделей базы данных
@@ -37,13 +46,23 @@ tf-idf/
     - Docker 28.2+
     - docker-compose 2.19+
     - PostgreSQL 17+
+    - GIT
 
 ### Запуск 
+    - клонировать репозиторий: git clone https://github.com/Dvaraz/tf-idf
+    - cd tf-idf
     - Скопировать конфиг: 'cp .example.env .env.prod'
     - Заполнить параметры в '.env.prod'
     - Запустить: 'docker compose up --build'
     - Запустить команду: sudo docker exec -it django-docker python manage.py createsuperuser - для создания суперпользователя
     - Приложение будет доступно на порту 8001
+
+### Использование
+    - Документация OpenApi будет доступна: http://host:8001/api/
+    
+    - Регистрация происходит при помощи email и password передаваемые в теле запроса: /api/v1/auth/login/ 
+    - после регистрации ответ будет содержать access и refresh токены: {"access": "...", "refresh": "..."}
+    - access token используетсря в заголовках для запросов: Authorization: Bearer token
 
 ### Конфигурируемые параметры 
     - Параметры настраиваются в '.env.prod':

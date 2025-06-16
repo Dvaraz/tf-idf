@@ -17,6 +17,7 @@ urlpatterns = [
     ),
 
     path('api/v1/', include("core.tfidf_app.urls")),
+    path('api/v1/docs/', include("core.doc_collections.urls")),
     path('api/v1/user/', include("core.user.urls")),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
     path('api/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui')

@@ -16,6 +16,7 @@ from .utils import data_format, calculate_metrics
 from core.tfidf_app.serializers import FileUploadSerializer, MetricsInSerializer
 from core.tfidf_app.models import Metrics
 from core.tfidf_app.version import __version__
+from ..doc_collections.services import DocumentModelAdapter
 
 
 class FileUploadView(APIView):
@@ -27,6 +28,18 @@ class FileUploadView(APIView):
         if not serializer.is_valid():
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+        file = serializer.validated_data['file']
+
+        file_name = file.name
+
+        user = request.user.id
+
+        DocumentModelAdapter.create_document(
+            file=file,
+            title=file_name,
+            owner_id=user
+        )
+
         gc.collect()
 
         tracemalloc.start()
@@ -37,11 +50,7 @@ class FileUploadView(APIView):
 
             start_time = time.perf_counter()
 
-            file = serializer.validated_data['file']
-
             result = data_format(file)
-
-            file_name = file.name
 
             end_time = time.perf_counter()
 
