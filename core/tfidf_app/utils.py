@@ -1,5 +1,5 @@
 import math
-import string
+import re
 
 from collections import defaultdict
 from django.db.models import Min, Max, Avg, Count, Q
@@ -18,10 +18,17 @@ def preprocess_text(file) -> list[str]:
     # Удаление пунктуации и приведение к нижнему регистру.
     processed_docs = []
     for doc in documents:
-        doc = doc.lower().translate(str.maketrans('', '', string.punctuation))
+        doc = doc.lower()
+        doc = re.sub(r'[^\w\s]', ' ', doc)
         processed_docs.append(doc.split())
 
     return processed_docs
+
+
+def clean_text(text: str) -> str:
+    text = text.lower()
+    doc = re.sub(r'[^\w\s]', ' ', text)
+    return doc
 
 
 def compute_tf(text: str) -> dict:
@@ -86,6 +93,22 @@ def data_format(file):
 
     # Сортировка и выбор топ-50
     return sorted(data, key=lambda x: -x['idf'])[:50]
+
+
+def compute_tf_idf_for_document(doc_text: str, collection: list[list[str]]):
+    tf = compute_tf(doc_text)
+    idf, _ = compute_idf(collection)
+
+    data = [
+        {
+            'word': word,
+            'tf': tf[word],
+            'idf': idf[word]
+        }
+        for word in tf
+    ]
+
+    return sorted(data, key=lambda x: x['tf'])[:50]
 
 
 def calculate_metrics():

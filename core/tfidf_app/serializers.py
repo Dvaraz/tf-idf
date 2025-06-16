@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from core.tfidf_app.models import Metrics
 
 
@@ -8,7 +9,7 @@ class FileUploadSerializer(serializers.Serializer):
 
     def validate_file(self, value):
         if not value.name.endswith('.txt'):
-            raise serializers.ValidationError('only txt')
+            raise serializers.ValidationError('Only txt')
         return value
 
 
