@@ -87,7 +87,7 @@ def data_format(file):
     data = [{
         'word': word,
         'tf': tf_total[word],
-        'docs': {key: item[word] for key, item in tf_list.items()},
+        'docs': {key: item[word] for key, item in tf_list.items() if item[word] > 0},
         'idf': round(idf[word], 4)
     } for word in tf_total]
 
