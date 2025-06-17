@@ -39,13 +39,22 @@ metrics_response_schema = create_dict_schema(
     status.HTTP_200_OK,
     name="Metrics",
     fields={
-            'files_processed': serializers.IntegerField(),
-            'min_time_processed': serializers.FloatField(),
-            'avg_time_processed': serializers.FloatField(),
-            'max_time_processed': serializers.FloatField(),
-            'latest_file_processed_timestamp': serializers.DateTimeField(),
-            'success_files': serializers.IntegerField(),
-            'peak_memory_usage': serializers.FloatField(),
+        'files_processed': serializers.IntegerField(),
+        'min_time_processed': serializers.FloatField(),
+        'avg_time_processed': serializers.FloatField(),
+        'max_time_processed': serializers.FloatField(),
+        'latest_file_processed_timestamp': serializers.DateTimeField(),
+        'success_files': serializers.IntegerField(),
+        'peak_memory_usage': serializers.FloatField(),
+    }
+)
+
+huffman_response_schema = create_dict_schema(
+    status.HTTP_200_OK,
+    name="Huffman Encoding",
+    fields={
+            'codes': serializers.DictField(),
+            'data': serializers.CharField(),
     }
 )
 
@@ -77,15 +86,15 @@ user_delete_schema = general_response_schema(
             ]
         ),
         400: OpenApiResponse(
-                description="Неверный запрос",
-                examples=[
-                    OpenApiExample(
-                        name="Error",
-                        value={"error": "Can not delete admin users"},
-                        response_only=True
-                    )
-                ]
-            ),
+            description="Неверный запрос",
+            examples=[
+                OpenApiExample(
+                    name="Error",
+                    value={"error": "Can not delete admin users"},
+                    response_only=True
+                )
+            ]
+        ),
         401: OpenApiResponse(
             description="Не авторизован",
             examples=[
@@ -97,15 +106,15 @@ user_delete_schema = general_response_schema(
             ]
         ),
         403: OpenApiResponse(
-                description="Неверный запрос",
-                examples=[
-                    OpenApiExample(
-                        name="Error",
-                        value={"error": "Only admin can delete other users"},
-                        response_only=True
-                    )
-                ]
-            ),
+            description="Неверный запрос",
+            examples=[
+                OpenApiExample(
+                    name="Error",
+                    value={"error": "Only admin can delete other users"},
+                    response_only=True
+                )
+            ]
+        ),
         500: OpenApiResponse(
             description="Ошибка сервера",
             examples=[

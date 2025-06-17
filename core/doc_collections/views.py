@@ -13,7 +13,9 @@ from rest_framework.viewsets import GenericViewSet
 from core.doc_collections.models import DocumentModel, Collection
 from core.doc_collections.serializers import DocumentListSerializer, CollectionSerializer, CollectionCreateSerializer, \
     CollectionDetailSerializer, DocumentStatisticSerializer, StatisticSerializer
+from core.doc_collections.utils import encode_huffman_algo
 from core.tfidf_app.utils import preprocess_text, compute_tf, clean_text, compute_tf_idf_for_document
+from docs.schemas import huffman_response_schema
 
 
 class DocumentsListView(ListAPIView):
@@ -99,6 +101,26 @@ class DocumentStatisticView(RetrieveModelMixin, GenericViewSet):
         )
 
         return Response({'data': serializer.data}, status=status.HTTP_200_OK)
+
+
+class DocumentHuffmanView(RetrieveModelMixin, GenericViewSet):
+    @huffman_response_schema
+    @action(detail=True, methods=['get'])
+    def huffman_encode(self, request, pk=None):
+        document = get_object_or_404(DocumentModel, pk=pk, owner=request.user)
+
+        try:
+            with open(document.file.path, 'r') as file:
+                content = file.read()
+        except IOError:
+            return Response(
+                {'error': 'File not found'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+
+        encoded_content, codes = encode_huffman_algo(content)
+
+        return Response({'codes': codes, 'data': encoded_content}, status=status.HTTP_200_OK)
 
 
 class CollectionCreateView(CreateAPIView):

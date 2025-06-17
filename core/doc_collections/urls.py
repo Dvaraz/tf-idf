@@ -13,6 +13,11 @@ urlpatterns = [
         views.DocumentStatisticView.as_view({'get': 'statistics'}),
         name='document_statistics'
     ),
+    path(
+        'documents/<int:pk>/huffman/',
+        views.DocumentHuffmanView.as_view({'get': 'huffman_encode'}),
+        name='document_huffman'
+    ),
     path('collections/', views.CollectionListView.as_view(), name='collections_list'),
     path('collections/create/', views.CollectionCreateView.as_view(), name='collections_create'),
     path('collections/<int:pk>/', views.CollectionDetailView.as_view(), name='collection_detail'),
