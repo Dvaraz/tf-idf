@@ -88,3 +88,9 @@ tf-idf/
     # Smtp settings
     - DEFAULT_FROM_EMAIL: адресс smtp сервиса
     - EMAIL_HOST_PASSWORD: пароль smtp сервиса
+
+## Структура базыданных:
+
+<div align="center">
+  <img src="images/database_img.png" alt="Schema" width="70%"/>
+</div>
